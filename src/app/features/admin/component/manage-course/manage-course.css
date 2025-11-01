@@ -1,0 +1,291 @@
+/* ============================
+   Course Management (Unified Theme)
+============================ */
+
+.manage-course-container {
+  padding: 30px 20px;
+  background-color: var(--background-color);
+  color: var(--text-primary);
+  min-height: 100vh;
+  font-family: Arial, sans-serif;
+}
+
+/* --- Tabs --- */
+.nav-tabs {
+  border-bottom: 2px solid var(--accent-color);
+  margin-bottom: 20px;
+}
+
+.nav-tabs .nav-link {
+  color: var(--text-secondary);
+  font-weight: 500;
+  background-color: transparent;
+  border: none;
+  transition: all 0.3s ease;
+  padding: 10px 20px;
+}
+
+.nav-tabs .nav-link:hover {
+  color: var(--primary-color);
+  background-color: rgba(75, 108, 183, 0.1);
+}
+
+.nav-tabs .nav-link.active {
+  color: var(--btn-warning-color);
+  background-color: var(--primary-color);
+  border-radius: 6px 6px 0 0;
+  font-weight: 600;
+}
+
+/* --- Tab Content --- */
+.tab-content {
+  background-color: var(--input-group-bg);
+  border: 1px solid #e0e0e0;
+  border-top: none;
+  padding: 25px;
+  border-radius: 0 0 var(--btn-border-radius) var(--btn-border-radius);
+  box-shadow: var(--box-shadow-login);
+}
+
+/* --- Headings --- */
+h5 {
+  color: var(--primary-color);
+  font-weight: 600;
+  margin-bottom: 15px;
+}
+
+/* --- Inputs & Selects --- */
+input.form-control,
+select.form-select {
+  background-color: var(--input-group-bg);
+  border: 1px solid #DDDDDD;
+  border-radius: var(--btn-border-radius);
+  color: var(--text-primary);
+  padding: 10px 15px;
+  height: var(--input-height);
+  transition: border-color 0.3s, box-shadow 0.3s;
+}
+
+input.form-control:focus,
+select.form-select:focus {
+  border-color: var(--primary-color);
+  box-shadow: 0 0 0 0.2rem rgba(75, 108, 183, 0.25);
+  outline: none;
+}
+
+/* --- Buttons --- */
+.btn-primary {
+  background-color: var(--primary-color);
+  color: var(--btn-warning-color);
+  border: none;
+  border-radius: var(--btn-border-radius);
+  font-weight: 600;
+  height: var(--btn-height);
+  padding: 0 var(--btn-padding-x);
+  transition: background-color 0.3s, transform 0.1s;
+}
+
+.btn-primary:hover {
+  background-color: var(--logo-bar-bg-hover);
+  transform: translateY(-1px);
+}
+
+.btn-danger {
+  background-color: var(--secondary-color);
+  color: var(--btn-warning-color);
+  border: none;
+  border-radius: var(--btn-border-radius);
+  height: var(--btn-height);
+  padding: 0 15px;
+  transition: opacity 0.3s;
+}
+
+.btn-danger:hover {
+  opacity: 0.85;
+}
+
+/* --- Lists (Section / Module / Topic Items) --- */
+.list-group-item {
+  background-color: var(--background-color);
+  border: 1px solid #E9ECEF;
+  color: var(--text-primary);
+  border-radius: var(--btn-border-radius);
+  margin-bottom: 6px;
+  padding: 10px 15px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  transition: background-color 0.2s, transform 0.1s;
+}
+
+.list-group-item:hover {
+  background-color: var(--input-group-bg);
+  transform: scale(1.01);
+}
+
+/* --- Responsive --- */
+@media (max-width: 768px) {
+  .form-control.w-50,
+  .form-select.w-50 {
+    width: 100% !important;
+  }
+
+  .btn-primary {
+    width: 100%;
+  }
+}
+
+
+
+/* ============================
+   Topic Table Styling
+============================ */
+.topic-table {
+  width: 100%;
+  border-collapse: collapse;
+  background-color: white;
+  border-radius: var(--btn-border-radius);
+  overflow: hidden;
+  box-shadow: var(--box-shadow-login);
+}
+
+.topic-table th {
+  background-color: var(--primary-color);
+  color: var(--btn-warning-color);
+  text-transform: uppercase;
+  font-size: 0.85rem;
+  padding: 12px 15px;
+  text-align: left;
+}
+
+.topic-table td {
+  padding: 12px 15px;
+  border-bottom: 1px solid #eeeeee;
+  vertical-align: top;
+  color: var(--text-primary);
+}
+
+.topic-table tr:hover {
+  background-color: var(--input-group-bg);
+}
+
+/* --- Topic Type Badges --- */
+.badge {
+  padding: 4px 8px;
+  border-radius: 4px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-transform: uppercase;
+}
+
+.badge-video {
+  background-color: #d4edda;
+  color: #155724;
+}
+
+.badge-doc {
+  background-color: #d1ecf1;
+  color: #0c5460;
+}
+
+.badge-quiz {
+  background-color: #fff3cd;
+  color: #856404;
+}
+
+/* --- Topic URL Link --- */
+.topic-link {
+  color: var(--accent-color);
+  text-decoration: none;
+  word-break: break-all;
+}
+
+.topic-link:hover {
+  text-decoration: underline;
+  color: var(--primary-color);
+}
+
+/* --- Action Buttons --- */
+.btn-danger.btn-sm {
+  background-color: var(--secondary-color);
+  border-radius: 0%;
+  border: none;
+  color: var(--btn-warning-color);
+  transition: opacity 0.3s, transform 0.1s;
+}
+
+.btn-danger.btn-sm:hover {
+  opacity: 0.85;
+  transform: translateY(-1px);
+}
+
+/* --- Responsive Table --- */
+@media (max-width: 768px) {
+  .topic-table {
+    font-size: 0.9rem;
+  }
+  .topic-table th,
+  .topic-table td {
+    padding: 8px;
+  }
+}
+
+
+
+/* ============================
+   Module Table Styling
+============================ */
+.module-table {
+  width: 100%;
+  border-collapse: collapse;
+  background-color: white;
+  border-radius: var(--btn-border-radius);
+  overflow: hidden;
+  box-shadow: var(--box-shadow-login);
+}
+
+.module-table th {
+  background-color: var(--primary-color);
+  color: var(--btn-warning-color);
+  text-transform: uppercase;
+  font-size: 0.85rem;
+  padding: 12px 15px;
+  text-align: left;
+}
+
+.module-table td {
+  padding: 12px 15px;
+  border-bottom: 1px solid #eeeeee;
+  vertical-align: top;
+  color: var(--text-primary);
+}
+
+.module-table tr:hover {
+  background-color: var(--input-group-bg);
+}
+
+/* --- Action Buttons --- */
+.btn-danger.btn-sm {
+  background-color: var(--secondary-color);
+  border-radius: 0%;
+  border: none;
+  color: var(--btn-warning-color);
+  transition: opacity 0.3s, transform 0.1s;
+}
+
+.btn-danger.btn-sm:hover {
+  opacity: 0.85;
+  transform: translateY(-1px);
+}
+
+/* --- Responsive --- */
+@media (max-width: 768px) {
+  .module-table {
+    font-size: 0.9rem;
+  }
+  .module-table th,
+  .module-table td {
+    padding: 8px;
+  }
+}
+

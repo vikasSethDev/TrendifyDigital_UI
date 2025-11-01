@@ -1,0 +1,78 @@
+<!-- 📌 Module Header -->
+<div
+  class="module-header d-flex flex-column flex-md-row justify-content-between align-items-center p-3 mb-3 rounded shadow-sm">
+  <button class="btn btn-info btn-sm mb-2 mb-md-0" (click)="prevModule()" [disabled]="!hasPrev()">
+    <i class="bi bi-arrow-left"></i> Previous Module
+  </button>
+
+  <div class="text-center mb-2 mb-md-0">
+    <h5 class="mb-0">
+      Module {{ currentModuleId }} - {{ getModuleTitle(currentModuleId) }}
+    </h5>
+    <small class="text-muted">Section: {{ currentSectionTitle }}</small>
+  </div>
+
+
+  <button class="btn btn-info btn-sm" (click)="nextModule()" [disabled]="!hasNext()">
+    Next Module <i class="bi bi-arrow-right"></i>
+  </button>
+</div>
+
+<!-- 📚 Module Topics Timeline -->
+<div *ngIf="currentModule && currentModule.length" class="timeline-container">
+  <div *ngFor="let topic of currentModule; let i = index" class="topic-section">
+    <!-- 🟧 Topic Header -->
+    <div class="topic-header">
+      <i class="bi bi-journal-bookmark-fill me-2"></i>
+      Topic {{ i + 1 }} - {{ topic.title }}
+    </div>
+
+    <!-- 📌 Timeline Accordion -->
+    <div class="timeline-items accordion" [attr.id]="'accordionTopic' + topic.id">
+      <div class="timeline-line"></div>
+
+      <div *ngFor="let row of topic.rows" class="accordion-item timeline-entry mb-3">
+        <!-- 🔵 Marker Icon -->
+        <div class="timeline-icon" [ngStyle]="{ backgroundColor: getColor(row.type) }">
+          <i [class]="getIcon(row.type)"></i>
+        </div>
+
+        <!-- 🪗 Accordion Header -->
+        <h2 class="accordion-header d-flex align-items-center" [attr.id]="'heading' + row.id">
+          <button class="accordion-button collapsed d-flex justify-content-between align-items-center w-100"
+            type="button" data-bs-toggle="collapse" [attr.data-bs-target]="'#collapse' + row.id" aria-expanded="false"
+            [attr.aria-controls]="'collapse' + row.id">
+            <span class="fw-bold text-primary">{{ row.title }}</span>
+            <span class="btn btn-link btn-sm ms-auto text-decoration-none">{{ row.type }}</span>
+          </button>
+        </h2>
+
+        <!-- 🔽 Accordion Body -->
+        <div [id]="'collapse' + row.id" class="accordion-collapse collapse" [attr.aria-labelledby]="'heading' + row.id"
+          [attr.data-bs-parent]="'#accordionTopic' + topic.id">
+          <div class="accordion-body">
+            This is the {{ row.type }} content for <strong>{{ row.title }}</strong>.
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ✅ Completion Marker -->
+  <div class="topic-header">
+    <i class="bi bi-hand-thumbs-up me-2"></i>
+    Module Completed
+  </div>
+</div>
+
+<!-- 📌 Module Footer -->
+<div
+  class="module-footer d-flex flex-column flex-md-row justify-content-between align-items-center p-3 mt-3 rounded shadow-sm">
+  <button class="btn btn-info btn-sm mb-2 mb-md-0" (click)="prevModule()" [disabled]="!hasPrev()">
+    <i class="bi bi-arrow-left"></i> Previous Module
+  </button>
+
+  <button class="btn btn-info btn-sm" (click)="nextModule()" [disabled]="!hasNext()">
+    Next Module <i class="bi bi-arrow-right"></i>
+  </button>
+</div>

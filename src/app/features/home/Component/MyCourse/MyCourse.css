@@ -1,0 +1,239 @@
+/* ------------------------------
+   Base Styles
+------------------------------ */
+.accordion-container {
+  max-width: 1100px;
+  margin: 20px auto;
+  font-family: Arial, sans-serif;
+}
+
+.accordion {
+  border: 1px solid var(--primary-color);
+  border-radius: 5px;
+  margin-bottom: 15px;
+  background: var(--background-color);
+  cursor: pointer;
+  transition: box-shadow 0.3s ease;
+  display: flex;
+  flex-direction: column;
+}
+
+.accordion.active {
+  box-shadow: 0 0 10px rgba(30, 42, 120, 0.3);
+}
+
+.accordion-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 15px 25px;
+  min-height: 60px;
+  box-sizing: border-box;
+  flex-wrap: wrap; /* allows wrapping on smaller screens */
+}
+
+.section-label {
+  font-weight: bold;
+  color: var(--primary-color);
+  font-size: 1.1rem;
+  flex: 1;
+}
+
+.section-title {
+  flex: 4;
+  font-weight: 700;
+  font-size: 1.2rem;
+  color: var(--primary-color);
+  text-align: center;
+  min-width: 150px;
+}
+
+.modules-count {
+  flex: 1;
+  color: var(--primary-color);
+  font-weight: 600;
+  text-align: right;
+  margin-right: 10px;
+}
+
+.icon-hand {
+  font-size: 24px;
+  color: var(--secondary-color);
+  user-select: none;
+  flex-shrink: 0;
+}
+
+.accordion-body {
+  background: white;
+  border-top: 1px solid var(--primary-color);
+  padding: 15px 25px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 15px;
+  justify-content: space-between;
+}
+
+/* Module styling */
+.module {
+  background: #fff;
+  border: 1px solid var(--primary-color);
+  border-radius: 4px;
+  display: flex;
+  align-items: center;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.08);
+  min-height: 80px;
+  padding: 0;
+  overflow: hidden;
+  box-sizing: border-box;
+  flex: 0 1 calc(50% - 10px); /* 2 per row on desktop */
+  max-width: calc(50% - 10px);
+}
+
+.module-id {
+  background: var(--primary-color);
+  color: white;
+  font-weight: bold;
+  font-size: 1.6rem;
+  width: 60px;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.module-content {
+  padding: 12px 20px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  flex: 1;
+  overflow: hidden;
+}
+
+.module-title {
+  font-weight: 600;
+  color: var(--text-primary);
+  font-size: 1rem;
+  margin-bottom: 4px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.module-details {
+  color: var(--text-secondary);
+  font-size: 0.85rem;
+}
+
+.btn-status {
+  border: none;
+  padding: 10px 16px;
+  margin-right: 10px;
+  font-weight: 700;
+  font-size: 0.85rem;
+  cursor: pointer;
+  border-radius: 4px;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  white-space: nowrap;
+  transition: background-color 0.3s ease;
+}
+
+.btn-status.watch {
+  background-color: var(--primary-color);
+  color: white;
+}
+
+.btn-status.resume {
+  background-color: var(--accent-color);
+  color: var(--text-primary);
+}
+
+.btn-status .arrow {
+  margin-left: 5px;
+  font-size: 1rem;
+}
+
+.level-complete {
+  font-weight: 700;
+  font-size: 1.3rem;
+  color: var(--primary-color);
+  margin-top: 15px;
+  width: 100%;
+  text-align: center;
+}
+
+.course-title-box {
+  background-color: var(--logo-bar-bg-hover);
+  padding: 30px 20px;
+  margin: 20px auto;
+  text-align: center;
+  border-radius: 6px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  max-width: 1100px;
+}
+
+.course-title-text {
+  color: #fff;
+  font-size: 1.5rem;
+  font-weight: 600;
+  margin: 0;
+}
+
+/* ------------------------------
+   Responsive Styles
+------------------------------ */
+
+/* Mobile (up to 600px) */
+/* Mobile (up to 600px) */
+@media (max-width: 600px) {
+  .module {
+    flex: 0 1 100%;
+    max-width: 100%;
+    flex-direction: column;
+    align-items: stretch;  /* Make children full width */
+  }
+
+  .module-id {
+    width: 100%;          /* full width */
+    height: 50px;         /* smaller height to fit mobile */
+    font-size: 1.2rem;
+  }
+
+  .module-content {
+    width: 100%;
+    padding: 10px;
+  }
+
+    .btn-status {
+    margin: 6px auto 0 auto;  /* top margin + horizontal centering */
+    width: 200px;             /* keeps button width fixed */
+    justify-content: center;
+    padding: 6px 12px;
+    font-size: 0.75rem;
+    display: flex;
+    align-items: center;
+    margin-bottom: 10px;
+  }
+}
+
+
+/* Tablet (601px - 992px) */
+@media (min-width: 601px) and (max-width: 992px) {
+  .module {
+    flex: 0 1 calc(50% - 10px); /* 2 per row */
+    max-width: calc(50% - 10px);
+  }
+}
+
+/* Laptop/Desktop (993px and above) */
+@media (min-width: 993px) {
+  .module {
+    flex: 0 1 calc(50% - 10px); /* still 2 per row */
+    max-width: calc(50% - 10px);
+  }
+}
+

@@ -1,0 +1,63 @@
+
+
+/* Header background */
+.header-bg {
+  background-color: var(--primary-color);
+  color: #fff;
+}
+
+/* Navbar links */
+.navbar .nav-link {
+  padding: 0.5rem 1rem;
+  color: #fff;
+}
+
+.navbar .nav-link:hover {
+  color: var(--accent-color);
+}
+
+/* Profile Image */
+.profile-image img {
+  border: 2px solid var(--accent-color);
+  width: 40px;
+  height: 40px;
+  object-fit: cover;
+}
+
+/* Dropdown menu */
+.dropdown-menu {
+  font-size: 14px;
+  min-width: 240px;
+  padding: 0;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+}
+
+/* Dropdown items */
+.dropdown-item {
+  padding: 12px 18px;
+  color: var(--text-primary);
+  border-bottom: 1px solid #eee;
+  transition: background-color 0.2s ease;
+}
+
+.dropdown-item:hover {
+  background-color: #f0f2f5;
+  color: var(--primary-color);
+}
+
+.dropdown-item.active {
+  background-color: #e7eaf0;
+  font-weight: 500;
+}
+
+.dropdown-item:last-child {
+  border-bottom: none;
+}
+
+/* Divider between items */
+.dropdown-divider {
+  margin: 0;
+  border-color: #e0e0e0;
+}

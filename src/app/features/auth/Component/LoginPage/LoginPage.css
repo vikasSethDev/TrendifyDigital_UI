@@ -1,0 +1,67 @@
+.login-container {
+  min-height: 100vh;
+  background-image: var(--background-image-url);
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  padding: 1rem;
+}
+
+.login-box {
+  width: 100%;
+  max-width: 420px;
+  background-color: var(--login-bg-color);
+  border-radius: var(--btn-border-radius);
+  overflow: hidden;
+  box-shadow: var(--box-shadow-login);
+}
+
+.logo-bar {
+  font-weight: bold;
+  background-color: var(--logo-bar-bg);
+}
+
+.input-group-text {
+  background-color: var(--input-group-bg);
+  border-radius: var(--btn-border-radius) 0 0 var(--btn-border-radius);
+}
+
+input.form-control {
+  height: var(--input-height);
+  font-size: 15px;
+  border-radius: 0 var(--btn-border-radius) var(--btn-border-radius) 0;
+}
+
+.square-btn {
+  height: var(--btn-height);
+  border-radius: 0;
+  padding: 0 var(--btn-padding-x);
+}
+
+.btn-custom-warning {
+  background-color: var(--btn-warning-bg);
+  border-color: var(--btn-warning-bg);
+  color: var(--btn-warning-color);
+}
+
+.btn-custom-warning:hover {
+  background-color: var(--btn-warning-bg-hover);
+  border-color: var(--btn-warning-bg-hover);
+}
+
+/* Responsive tweaks for mobile */
+@media (max-width: 576px) {
+  .login-content {
+    padding: 1.5rem 1rem;
+  }
+
+  .d-flex.justify-content-end.gap-2 {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .square-btn {
+    width: 100%;
+    text-align: center;
+  }
+}

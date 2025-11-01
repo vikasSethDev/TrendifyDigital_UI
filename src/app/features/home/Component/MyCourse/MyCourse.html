@@ -1,0 +1,58 @@
+<div class="accordion-container">
+
+  <!-- 🔄 Loading spinner -->
+  <div *ngIf="isLoading" class="loading">
+    <div class="spinner"></div>
+    <p>Loading course sections...</p>
+  </div>
+
+ <div class="accordion-container">
+  <div class="accordion"
+       *ngFor="let section of sectionsData"
+       (click)="handleSectionClick(section.sectionId)"
+       [class.active]="activeSection === section.sectionId">
+
+    <div class="accordion-header">
+      <div class="section-label">Section {{ section.sectionId }} -</div>
+      <div class="section-title">{{ section.title }}</div>
+      <div class="modules-count">{{ section.modulesCount }} Modules</div>
+      <div class="icon-hand" title="Click to expand">👆</div>
+    </div>
+
+    <div class="accordion-body" *ngIf="activeSection === section.sectionId">
+      <div class="module"
+           *ngFor="let module of section.modules"
+           [ngClass]="{'not-accessible': !userAccessibleSections.includes(section.sectionId)}">
+
+        <div class="module-id">{{ module.moduleId }}</div>
+
+        <div class="module-content">
+          <div class="module-title">{{ module.title }}</div>
+          <div class="module-details">{{ module.docsCount }} Docs, {{ module.videosCount }} Videos</div>
+        </div>
+
+        <button class="btn-status"
+                [ngClass]="{
+                  watch: module.status === 'watch',
+                  resume: module.status === 'resume'
+                }"
+                (click)="onModuleClick(section.sectionId, module); $event.stopPropagation()">
+          {{ module.status === 'watch' ? 'WATCH AGAIN...' : 'RESUME...' }}
+          <span class="arrow">➔</span>
+        </button>
+      </div>
+
+      <div *ngIf="section.levelComplete" class="level-complete">
+        ✔ Level - {{ section.sectionId }} Complete
+      </div>
+    </div>
+  </div>
+</div>
+
+
+  <!-- ❌ No Data Case -->
+  <div *ngIf="!isLoading && sectionsData.length === 0" class="no-data">
+    No course sections available.
+  </div>
+
+</div>

@@ -1,0 +1,167 @@
+<div class="manage-course-container">
+
+  <!-- NAV TABS -->
+  <ul class="nav nav-tabs">
+    <li class="nav-item">
+      <a class="nav-link active" data-bs-toggle="tab" href="#tabSection">Sections</a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link" data-bs-toggle="tab" href="#tabModule">Modules</a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link" data-bs-toggle="tab" href="#tabTopic">Topics</a>
+    </li>
+  </ul>
+
+  <div class="tab-content mt-3">
+
+    <!-- =============== SECTION TAB =============== -->
+    <div id="tabSection" class="tab-pane fade show active">
+      <h5>Add New Section</h5>
+
+      <div class="d-flex flex-wrap align-items-center gap-2 mb-3">
+        <input type="text" #sectionName placeholder="Enter section title" class="form-control w-50" />
+        <button class="btn btn-primary" (click)="addSection(sectionName.value)">Add Section</button>
+      </div>
+
+      <ul class="list-group mt-3">
+        <li *ngFor="let s of sections" class="list-group-item">
+          <span>{{ s.sectionName }}</span>
+          <div>
+            <button class="btn btn-sm btn-primary me-2" (click)="updateSection(s)">Edit</button>
+            <button class="btn btn-sm btn-danger" (click)="deleteSection(s._id)">Delete</button>
+          </div>
+        </li>
+      </ul>
+
+      <p *ngIf="sections.length === 0" class="text-muted mt-2">No sections available.</p>
+    </div>
+
+    <!-- =============== MODULE TAB =============== -->
+    <div id="tabModule" class="tab-pane fade">
+      <h5>Select Section</h5>
+
+      <select class="form-select w-50 mb-3" (change)="onSectionChange($event)">
+        <option value="">-- Select Section --</option>
+        <option *ngFor="let s of sections" [value]="s._id">{{ s.sectionName }}</option>
+      </select>
+
+      <div *ngIf="selectedSectionId">
+        <div class="d-flex flex-wrap align-items-center gap-2 mb-3">
+          <input type="text" #moduleTitle placeholder="Enter module title" class="form-control w-50" />
+          <button class="btn btn-primary" (click)="addModule(moduleTitle.value)">Add Module</button>
+        </div>
+
+        <div class="table-responsive mt-3">
+          <table class="module-table">
+            <thead>
+              <tr>
+                <th>#</th>
+                <th>Title</th>
+                <th>Docs</th>
+                <th>Videos</th>
+                <th>Edit</th>
+                <th>Delete</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let m of modules; let i = index">
+                <td>{{ i + 1 }}</td>
+                <td>{{ m.title }}</td>
+                <td>{{ m.docsCount || 0 }}</td>
+                <td>{{ m.videosCount || 0 }}</td>
+                <td>
+                  <button class="btn btn-sm btn-primary me-2" (click)="updateModule(m)">Edit</button>
+                </td>
+                 <td>
+                  <button class="btn btn-sm btn-danger" (click)="deleteModule(m._id)">Delete</button>
+                </td>
+              </tr>
+              <tr *ngIf="modules.length === 0">
+                <td colspan="5" class="text-center text-muted">No modules found.</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- =============== TOPIC TAB =============== -->
+    <div id="tabTopic" class="tab-pane fade">
+      <h5>Select Section & Module</h5>
+
+      <select class="form-select w-50 mb-2" (change)="onSectionChange($event)">
+        <option value="">-- Select Section --</option>
+        <option *ngFor="let s of sections" [value]="s._id">{{ s.sectionName }}</option>
+      </select>
+
+      <select class="form-select w-50 mb-3" (change)="onModuleChange($event)">
+        <option value="">-- Select Module --</option>
+        <option *ngFor="let m of modules" [value]="m._id">{{ m.title }}</option>
+      </select>
+
+      <div *ngIf="selectedModuleId">
+        <input type="text" #topicTitle placeholder="Enter topic title" class="form-control w-50 mb-2" />
+        <textarea #topicContents placeholder="Enter topic contents" class="form-control w-50 mb-2" rows="3"></textarea>
+
+        <select class="form-select w-50 mb-2" #topicType>
+          <option value="video">Video</option>
+          <option value="pdf">PDF</option>
+          <option value="quiz">Quiz</option>
+          <option value="article">Article</option>
+        </select>
+
+        <input type="text" #topicUrl placeholder="Enter topic URL" class="form-control w-50 mb-3" />
+
+        <button class="btn btn-primary"
+          (click)="addTopic(topicTitle.value, topicContents.value, topicType.value, topicUrl.value)">
+          Add Topic
+        </button>
+      </div>
+
+      <div class="table-responsive mt-4">
+        <table class="topic-table">
+          <thead>
+            <tr>
+              <th>#</th>
+              <th>Title</th>
+              <th>Contents</th>
+              <th>Type</th>
+              <th>URL</th>
+              <th>Edit</th>
+              <th>Delete</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let t of topics; let i = index">
+              <td>{{ i + 1 }}</td>
+              <td>{{ t.title }}</td>
+              <td>{{ t.contents }}</td>
+              <td>
+                <span class="badge" [ngClass]="{
+                  'badge-video': t.type === 'video',
+                  'badge-doc': t.type === 'pdf' || t.type === 'document',
+                  'badge-quiz': t.type === 'quiz'
+                }">
+                  {{ t.type | titlecase }}
+                </span>
+              </td>
+              <td>
+                <a [href]="t.url" target="_blank" class="topic-link">{{ t.url }}</a>
+              </td>
+              <td>
+                <button class="btn btn-sm btn-primary me-2" (click)="updateTopic(t)">Edit</button>
+              </td>
+              <td>
+                <button class="btn btn-sm btn-danger" (click)="deleteTopic(t._id)">Delete</button>
+              </td>
+            </tr>
+            <tr *ngIf="topics.length === 0">
+              <td colspan="6" class="text-center text-muted">No topics found.</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,149 @@
+
+
+/* Root Wrapper */
+.dashboard-container {
+  background-color: var(--background-color);
+  color: var(--text-primary);
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  padding: 2rem;
+}
+
+/* Shared Box Style */
+.dashboard-box,
+.dashboard-header-box,
+.announcement-box,
+.assignment-reminder,
+.payment-section {
+  background-color: var(--primary-color);
+  color: var(--white);
+  padding: 1.25rem;
+  border-radius: 8px;
+}
+
+/* Announcement Specific */
+.announcement-box {
+  font-size: 0.95rem;
+  line-height: 1.5;
+  margin-bottom: 1rem;
+}
+
+/* Assignment Specific */
+.assignment-reminder {
+  text-align: center;
+  font-weight: 600;
+}
+
+/* Refresh Button */
+.refresh-btn {
+  background-color: var(--btn-warning-bg);
+  color: white;
+  color: var(--white);
+  border: none;
+  font-weight: 600;
+  padding: 0.5rem 1rem;
+  border-radius: 5px;
+  transition: background-color 0.3s ease;
+}
+
+.refresh-btn:hover {
+  background-color: var( --btn-warning-bg-hover);
+}
+
+
+
+/* Headings & Typography */
+h5, .table th {
+  color: var(--white);
+  font-weight: 600;
+}
+
+/* Table Styling */
+.table th, .table td {
+  font-size: 0.95rem;
+  vertical-align: middle;
+}
+
+.table td strong {
+  color: var(--white);
+}
+
+/* Responsive Layout */
+@media (max-width: 768px) {
+  .dashboard-container {
+    padding: 1rem;
+  }
+
+  .dashboard-header-box {
+    flex-direction: column;
+    text-align: center;
+    gap: 1rem;
+  }
+
+  .refresh-btn {
+    width: 100%;
+  }
+
+  .progress-circle {
+    margin-bottom: 1rem;
+  }
+}
+
+/* Progress Circle */
+.progress-circle {
+  position: relative;
+  width: 80px;
+  height: 80px;
+  margin: 0 auto 1rem;
+  border-radius: 50%;
+  background: conic-gradient(
+    var(--accent-color) calc(var(--progress, 0) * 1%),
+    var(--light-gray) 0
+  );
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.progress-value {
+  position: absolute;
+  font-weight: 700;
+  font-size: 1.3rem;
+  color: var(--accent-color);
+}
+
+
+.donut-chart {
+  --size: 100px;
+  --line: 10px;
+  --color: var(--btn-warning-bg); 
+  --track: #eee;
+  --percent: 0%; /* fallback */
+
+  width: var(--size);
+  height: var(--size);
+  border-radius: 50%;
+  background: conic-gradient(var(--color) var(--percent), var(--track) 0%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  transition: background 0.5s ease-in-out;
+}
+
+.donut-chart::before {
+  content: '';
+  width: calc(100% - var(--line) * 2);
+  height: calc(100% - var(--line) * 2);
+  background: white;
+  border-radius: 50%;
+  position: absolute;
+}
+
+.donut-value {
+  position: relative;
+  font-weight: bold;
+  font-size: 1.2rem;
+  color:var(--btn-warning-bg);
+  z-index: 1;
+  user-select: none;
+}

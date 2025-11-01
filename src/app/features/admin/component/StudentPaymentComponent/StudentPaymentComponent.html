@@ -1,0 +1,105 @@
+<div class="student-management-container">
+
+  <div class="header-row">
+    <div class="header-left">
+      <h2>
+        💰 Student Payment Details
+        <span *ngIf="studentName" class="student-name">({{ studentName }})</span>
+      </h2>
+    </div>
+    <div class="header-right">
+      <button class="add-student-btn" (click)="openAddPaymentModal()">
+        + Add Payment
+      </button>
+    </div>
+  </div>
+
+  <div class="table-responsive">
+    <table class="student-table">
+      <thead>
+        <tr>
+          <th>Installment Date</th>
+          <th>Amount</th>
+          <th>Status</th>
+          <th>Payment Mode / Reference No.</th>
+          <th>Enroll ID</th>
+          <th>Action</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let pay of payments">
+          <td>{{ pay.installmentDate | date: 'dd-MMM-yyyy' }}</td>
+          <td>₹{{ pay.amount }}</td>
+          <td>
+            <span [class.active]="pay.status === 'Paid'" [class.inactive]="pay.status !== 'Paid'">
+              {{ pay.status }}
+            </span>
+          </td>
+          <td>{{ pay.paymentMode }} / {{ pay.referenceNo }}</td>
+          <td>{{ pay.enrollId }}</td>
+
+          <td>
+            <button class="action-btn update-btn" style="margin-right: 8px;" (click)="openEditPaymentModal(pay)">
+              Edit
+            </button>
+            <button class="action-btn" style="background-color: #f44336; color: white;"
+              (click)="deletePayment(pay._id)">
+              Delete
+            </button>
+          </td>
+
+        </tr>
+        <tr *ngIf="payments.length === 0">
+          <td colspan="8" class="no-data">No payment records found.</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- Payment Modal -->
+  <div class="modal-backdrop" *ngIf="isPaymentModalOpen" (click)="closePaymentModal()">
+    <div class="modal-content" (click)="$event.stopPropagation()">
+      <h2>{{ isEditMode ? 'Update Payment' : 'Add New Payment' }}</h2>
+
+      <form (ngSubmit)="savePayment()" #paymentForm="ngForm">
+
+        <div class="form-group">
+          <label>Installment Date</label>
+          <input type="date" [(ngModel)]="paymentData.installmentDate" name="installmentDate" required />
+        </div>
+
+        <div class="form-group">
+          <label>Amount</label>
+          <input type="number" [(ngModel)]="paymentData.amount" name="amount" required />
+        </div>
+
+        <div class="form-group">
+          <label>Status</label>
+          <select [(ngModel)]="paymentData.status" name="status" required>
+            <option value="Paid">Paid</option>
+            <option value="Pending">Pending</option>
+            <option value="Due">Due</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label>Payment Mode / Reference No.</label>
+          <input type="text" [(ngModel)]="paymentData.referenceNo" name="referenceNo" />
+        </div>
+
+        <!-- 🔹 Added Enroll ID Field -->
+        <div class="form-group">
+          <label>Enroll ID</label>
+          <input type="text" [(ngModel)]="paymentData.enrollId" name="enrollId" required />
+        </div>
+
+        <div class="modal-actions">
+          <button type="button" class="btn-cancel" (click)="closePaymentModal()">Cancel</button>
+          <button type="submit" class="btn-primary">
+            {{ isEditMode ? 'Save Changes' : 'Add Payment' }}
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>

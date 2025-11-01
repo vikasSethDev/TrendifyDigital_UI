@@ -1,0 +1,199 @@
+<div class="student-management-container">
+
+    <div class="header-row">
+        <input type="text" placeholder="Filter by name, ID, or email..." [ngModel]="filterTerm"
+            (input)="onFilterChange($event)" class="filter-input" />
+
+        <button (click)="openAddModal()" class="add-student-btn">
+            + Add New Student
+        </button>
+    </div>
+
+    <div class="table-responsive">
+        <table class="student-table">
+            <thead>
+                <tr>
+                    <!-- <th>Login ID</th> -->
+                    <th>Full Name</th>
+                    <th>Email</th>
+                    <th>Mobile No</th>
+                    <th>Enroll ID</th>
+                    <th>Status</th>
+                    <th>Action</th>
+                    <th>Payment Info</th>
+                    <th>Cource Access</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let student of students">
+                    <!-- <td>{{ student.loginID }}</td> -->
+                    <td>{{ student.firstName }}</td>
+                    <td>{{ student.email }}</td>
+                    <td>{{ student.mobileNo }}</td>
+                    <td>{{ student.enrollId }}</td>
+                    <td>
+                        <span [class.active]="student.status" [class.inactive]="!student.status">
+                            {{ student.status ? 'Active' : 'Inactive' }}
+                        </span>
+                    </td>
+                    <td>
+                        <button (click)="openUpdateModal(student)" class="action-btn update-btn">
+                            Update
+                        </button>
+                    </td>
+                    <td>
+                        <button class="action-btn update-btn" (click)="openPaymentPage(student)">
+                            Update Payment
+                        </button>
+                    </td>
+                    <td>
+                        <button class="action-btn update-btn" (click)="openCourseAccess(student)">
+                            Access/Update
+                        </button>
+
+                    </td>
+                </tr>
+                <tr *ngIf="students.length === 0">
+                    <td colspan="7" class="no-data">No students found.</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+
+    <div class="modal-backdrop" *ngIf="isModalOpen" (click)="closeModal()">
+        <div class="modal-content" (click)="$event.stopPropagation()">
+            <h2>{{ isEditMode ? 'Update Student Details' : 'Insert New Student' }}</h2>
+            <form [formGroup]="studentForm" (ngSubmit)="saveStudent()">
+
+                <div class="form-grid">
+                    <div class="column">
+                        <div class="form-group">
+                            <label>Login ID:</label>
+                            <input type="text" formControlName="LoginID" [attr.readonly]="isEditMode ? true : null" />
+                            <div *ngIf="studentForm.get('LoginID')?.invalid && studentForm.get('LoginID')?.touched"
+                                class="error-message">
+                                Login ID is required.
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label>First Name:</label>
+                            <input type="text" formControlName="FirstName" />
+                        </div>
+
+                        <div class="form-group">
+                            <label>Last Name:</label>
+                            <input type="text" formControlName="LastName" />
+                        </div>
+
+                        <div class="form-group">
+                            <label>Email:</label>
+                            <input type="email" formControlName="Email" />
+                        </div>
+
+                        <div class="form-group">
+                            <label>Mobile No:</label>
+                            <input type="text" formControlName="MobileNo" />
+                        </div>
+
+                        <div class="form-group">
+                            <label>Date of Birth:</label>
+                            <input type="date" formControlName="DOB" />
+                            <small *ngIf="!isEditMode" class="hint">Password format: FirstName@YYYY (e.g.,
+                                Alex@2000)</small>
+                        </div>
+
+                        <div class="form-group">
+                            <label>Gender:</label>
+                            <select formControlName="Gender">
+                                <option value="" disabled selected>Select Gender</option>
+                                <option value="Male">Male</option>
+                                <option value="Female">Female</option>
+                                <option value="Other">Other</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label>Address:</label>
+                            <textarea formControlName="Address"></textarea>
+                        </div>
+
+                        <div class="form-group">
+                            <label>State:</label>
+                            <input type="text" formControlName="State" />
+                        </div>
+                    </div>
+
+                    <div class="column">
+
+                        <div class="form-group">
+                            <label>Objective Of Doing Course:</label>
+                            <select formControlName="ObjectiveOfCourse">
+                                <option value="" disabled selected>Select</option>
+                                <option value="Placement">Placement</option>
+                                <option value="Skill Development">Skill Development</option>
+                                <option value="Higher Studies">Higher Studies</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label>Your Occupation:</label>
+                            <select formControlName="Occupation">
+                                <option value="" disabled selected>Select</option>
+                                <option value="Student">Student</option>
+                                <option value="Working Professional">Working Professional</option>
+                                <option value="Business">Business</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label>Company / Business Name:</label>
+                            <input type="text" formControlName="CompanyName" />
+                        </div>
+
+                        <div class="form-group">
+                            <label>Designation:</label>
+                            <input type="text" formControlName="Designation" />
+                        </div>
+
+                        <hr>
+                        <h4>Enrollment Details</h4>
+
+                        <div class="form-group">
+                            <label>Enroll ID:</label>
+                            <input type="text" formControlName="EnrollID" />
+                        </div>
+
+                        <div class="form-group">
+                            <label>Course Code:</label>
+                            <input type="text" formControlName="CourseCode" />
+                        </div>
+
+                        <div class="form-group">
+                            <label>Batch Code:</label>
+                            <input type="text" formControlName="BatchCode" />
+                        </div>
+
+                        <div class="form-group">
+                            <label>Batch Timing:</label>
+                            <input type="time" formControlName="BatchTiming" />
+                        </div>
+
+                        <div class="form-group status-checkbox">
+                            <label>Status:</label>
+                            <input type="checkbox" formControlName="Status" />
+                        </div>
+                    </div>
+                </div>
+
+                <div class="modal-actions">
+                    <button type="button" (click)="closeModal()" class="btn-cancel">Cancel</button>
+                    <button type="submit" [disabled]="studentForm.invalid" class="btn-primary">
+                        {{ isEditMode ? 'Save Changes' : 'Register Student' }}
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

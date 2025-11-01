@@ -1,0 +1,44 @@
+<div class="student-management-container">
+
+    <div class="page-header">
+        <h2>
+            🎓 <span>Student Access Management</span>
+            <small>({{ studentName | uppercase }})</small>
+        </h2>
+        <h5 >
+           
+            <!-- <small>({{studentId}})</small> -->
+        </h5>
+
+    </div>
+
+
+    <div class="table-responsive">
+        <table class="student-table">
+            <thead>
+                <tr>
+                    <th>Section ID</th>
+                    <th>Section Title</th>
+                    <th>Total Modules</th>
+                    <th>Access Status</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let section of courseSections">
+                    <td>{{ section.sectionId }}</td>
+                    <td>{{ section.title }}</td>
+                    <td>{{ section.modulesCount }}</td>
+                    <td>
+                        <button class="action-btn update-btn" [ngClass]="section.accessGranted ? 'active' : 'inactive'"
+                            (click)="toggleAccess(section)">
+                            {{ section.accessGranted ? 'Revoke Access' : 'Grant Access' }}
+                        </button>
+                    </td>
+                </tr>
+                <tr *ngIf="courseSections.length === 0">
+                    <td colspan="4" class="no-data">No course sections available.</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>

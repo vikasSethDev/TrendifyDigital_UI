@@ -1,0 +1,273 @@
+/* --- Global Variables Integration --- */
+/* The variables are already defined in :root (e.g., style.css) and are inherited. */
+
+.student-management-container {
+    padding: 30px 20px;
+    background-color: var(--background-color);
+    min-height: 100vh;
+    font-family: Arial, sans-serif;
+    color: var(--text-primary);
+}
+
+/* --- Header Row (Filter and Add Button) --- */
+
+.header-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 25px;
+    gap: 15px; /* Spacing between filter and button */
+}
+
+.filter-input {
+    flex-grow: 1; /* Allows filter to take up most space */
+    padding: 10px 15px;
+    height: var(--input-height);
+    border: 1px solid #DDDDDD;
+    border-radius: var(--btn-border-radius);
+    background-color: var(--input-group-bg);
+    transition: border-color 0.3s;
+    max-width: 400px;
+}
+
+.filter-input:focus {
+    border-color: var(--primary-color);
+    box-shadow: 0 0 0 0.2rem rgba(75, 108, 183, 0.25); /* Primary color shadow */
+    outline: none;
+}
+
+.add-student-btn {
+    /* padding: var(--btn-padding-x); */
+    padding: 10px;
+    height: var(--btn-height);
+    background-color: var(--primary-color);
+    color: var(--btn-warning-color); /* White text */
+    border: none;
+    /* border-radius: var(--btn-border-radius); */
+    border-radius: 0%;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background-color 0.3s, transform 0.1s;
+    white-space: nowrap; /* Prevent wrapping on the button text */
+}
+
+.add-student-btn:hover {
+    background-color: var(--logo-bar-bg-hover);
+    transform: translateY(-1px);
+}
+
+/* --- Student Table --- */
+
+.table-responsive {
+    overflow-x: auto;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+    border-radius: 0%;
+}
+
+.student-table {
+    width: 100%;
+    border-collapse: separate; /* Use separate for border-radius on containers */
+    border-spacing: 0;
+    background-color: white;
+    min-width: 800px; /* Ensure table is readable */
+}
+
+.student-table th, .student-table td {
+    padding: 12px 15px;
+    text-align: left;
+    border-bottom: 1px solid #EEEEEE;
+}
+
+.student-table th {
+    background-color: var(--primary-color);
+    color: var(--btn-warning-color); /* White text */
+    font-weight: 600;
+    text-transform: uppercase;
+    font-size: 0.85rem;
+}
+
+.student-table tr:hover {
+    background-color: #F8F8F8;
+}
+
+.student-table tbody tr:last-child td {
+    border-bottom: none;
+}
+
+/* Status Badges/Indicators */
+.active, .inactive {
+    padding: 4px 8px;
+    border-radius: 4px;
+    font-size: 0.8rem;
+    font-weight: 600;
+}
+
+.active {
+    background-color: #D4EDDA; /* Light green */
+    color: #155724; /* Dark green text */
+}
+
+.inactive {
+    background-color: #F8D7DA; /* Light red */
+    color: #721C24; /* Dark red text */
+}
+
+/* Action Button */
+.action-btn {
+    padding: 8px 12px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-weight: 500;
+    transition: opacity 0.3s;
+}
+
+.update-btn {
+    background-color: var(--accent-color); 
+    border-radius: 0%;
+    color: var(--text-primary);
+}
+
+.update-btn:hover {
+    opacity: 0.85;
+}
+
+.no-data {
+    text-align: center;
+    padding: 20px;
+    color: var(--text-secondary);
+    font-style: italic;
+}
+
+
+/* --- Modal Styling --- */
+
+.modal-backdrop {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.6);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1050; /* Above typical navbar/header */
+}
+
+.modal-content {
+    background-color: white;
+    padding: 30px;
+    border-radius: var(--btn-border-radius);
+    box-shadow: var(--box-shadow-login);
+    width: 90%;
+    max-width: 600px;
+    max-height: 90vh; /* Prevent modal from overflowing viewport */
+    overflow-y: auto;
+    position: relative;
+}
+
+.modal-content h2 {
+    color: var(--primary-color);
+    margin-bottom: 25px;
+    border-bottom: 2px solid var(--accent-color);
+    padding-bottom: 10px;
+}
+
+.form-group {
+    margin-bottom: 18px;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: 600;
+    color: var(--text-secondary);
+}
+
+.modal-content input[type="text"],
+.modal-content input[type="email"],
+.modal-content input[type="date"],
+.modal-content select {
+    width: 100%;
+    padding: 10px 15px;
+    height: var(--input-height);
+    border: 1px solid #CCCCCC;
+    border-radius: var(--btn-border-radius);
+    background-color: #FAFAFA;
+}
+
+.modal-content input[type="checkbox"] {
+    width: auto;
+    margin-left: 10px;
+    transform: scale(1.2);
+}
+
+.modal-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+    margin-top: 30px;
+    padding-top: 15px;
+    border-top: 1px solid #EEEEEE;
+}
+
+.btn-primary, .btn-cancel {
+    height: var(--btn-height);
+    padding: 0 var(--btn-padding-x);
+    border: none;
+    /* border-radius: var(--btn-border-radius); */
+    cursor: pointer;
+    font-weight: 600;
+    transition: background-color 0.3s;
+    border-radius: 0%;
+}
+
+.btn-primary {
+    background-color: var(--primary-color);
+    color: var(--btn-warning-color); /* White */
+}
+
+.btn-primary:disabled {
+    background-color: #AAAAAA;
+    cursor: not-allowed;
+}
+
+.btn-primary:hover:not(:disabled) {
+    background-color: var(--logo-bar-bg-hover);
+}
+
+.btn-cancel {
+    background-color: #E0E0E0;
+    color: var(--text-primary);
+}
+
+.btn-cancel:hover {
+    background-color: #C0C0C0;
+}
+
+.error-message {
+    color: var(--secondary-color);
+    font-size: 0.85rem;
+    margin-top: 4px;
+}
+
+.hint {
+    display: block;
+    font-size: 0.75rem;
+    color: var(--text-secondary);
+    margin-top: 4px;
+}
+
+.header-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.student-name {
+  font-size: 1rem;
+  font-weight: 500;
+  color: #666;
+  margin-left: 8px;
+}

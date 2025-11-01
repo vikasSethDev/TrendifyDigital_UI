@@ -1,0 +1,79 @@
+/* :root {
+  --primary-color: #2C3E50;      
+  --secondary-color: #E67E22;    
+  --accent-color: #1ABC9C;       
+  --background-color: #F4F6F8;    
+  --text-primary: #2C3E50;        
+  --text-secondary: #7F8C8D;    
+
+  --background-image-url: url('https://images.unsplash.com/photo-1503264116251-35a269479413');
+
+  --login-bg-color: rgba(255, 255, 255, 0.7);
+  --logo-bar-bg: #2C3E50;
+  --logo-bar-bg-hover: #34495E;
+
+  --input-group-bg: #ecf0f1;
+
+  --btn-warning-bg: #1ABC9C;
+  --btn-warning-bg-hover: #16A085;
+  --btn-warning-color: #fff;
+
+  --btn-border-radius: 4px;
+
+  --input-height: 42px;
+  --btn-height: 48px;
+  --btn-padding-x: 1.75rem;
+
+  --box-shadow-login: 0 0 25px rgba(0, 0, 0, 0.1);
+} */
+
+
+
+ /* :root {
+  --primary-color: #1E2A78;
+  --secondary-color: #FF6F61;
+  --accent-color: #FFC845;
+  --background-color: #FAF7F0;
+  --text-primary: #333333;
+  --text-secondary: #777777;
+
+  --background-image-url: url('https://images.unsplash.com/photo-1521791136064-7986c2920216');
+
+  --login-bg-color: rgba(255, 255, 255, 0.6);
+  --logo-bar-bg: #1E2A78;
+  --logo-bar-bg-hover: #7884d1;
+  --input-group-bg: #eee;
+  --btn-warning-bg: #1E2A78;
+  --btn-warning-bg-hover: #7884d1;
+  --btn-warning-color: #000;
+  --btn-border-radius: 2px;
+  --input-height: 40px;
+  --btn-height: 45px;
+  --btn-padding-x: 1.5rem;
+  --box-shadow-login: 0 0 20px rgba(0, 0, 0, 0.15);
+}  */
+
+
+:root {
+  --primary-color: #4B6CB7;
+  --secondary-color: #FF6B6B;
+  --accent-color: #FFD93D;
+  --background-color: #F4F7FA;
+  --text-primary: #222222;
+  --text-secondary: #555555;
+
+  --background-image-url: url('https://images.unsplash.com/photo-1521791136064-7986c2920216');
+
+  --login-bg-color: rgba(255, 255, 255, 0.8);
+  --logo-bar-bg: #4B6CB7;       
+  --logo-bar-bg-hover: #3A549B; 
+  --input-group-bg: #EFEFEF;
+  --btn-warning-bg: #FF6B6B;
+  --btn-warning-bg-hover: #FF4C4C;
+  --btn-warning-color: #FFFFFF;
+  --btn-border-radius: 6px;
+  --input-height: 45px;
+  --btn-height: 48px;
+  --btn-padding-x: 1.5rem;
+  --box-shadow-login: 0 8px 25px rgba(0, 0, 0, 0.2); 
+}

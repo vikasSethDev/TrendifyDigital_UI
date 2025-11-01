@@ -1,0 +1,140 @@
+<div class="container my-4 p-4 bg-white rounded shadow-sm dashboard-container">
+  <!-- User Profile & Welcome -->
+  <div class="dashboard-header-box text-white mb-4">
+    <div class="row align-items-center">
+      <!-- Left column (4 cols) -->
+      <div class="col-md-4">
+        <h4>{{ user.name }}</h4>
+        <p class="mb-0">{{ user.email }}</p>
+        <a (click)="goToProfile()">
+          <small>
+            <i class="bi bi-gear"></i> MY PROFILE
+          </small>
+        </a>
+
+      </div>
+
+      <!-- Right column (8 cols) -->
+      <div class="col-md-8  fw-bold">
+        <p>
+          Welcome to your Trendify Digital dashboard — your central hub to track progress, explore your personalized
+          learning path, and celebrate the digital skills you've earned along the way.
+        </p>
+      </div>
+    </div>
+  </div>
+
+
+  <!-- Announcement Section -->
+  <h5 class="mb-3 text-primary"><i class="bi bi-megaphone"></i> Important Announcement:</h5>
+
+  <div class="announcement-box text-white mb-3 rounded">
+    <i class="bi bi-megaphone"></i> <strong>Note!</strong> Most Corporates have re-started their hiring process.<br />
+    If you have completed your course & certification and looking for placements, kindly drop an email at
+    <strong>placements@digiperform.com</strong>
+  </div>
+
+  <div class="assignment-reminder text-white fw-bold text-center mb-4 rounded">
+    <i class="bi bi-megaphone"></i> Note!<br />
+    It's mandatory to complete all assignments before applying for certification.
+  </div>
+
+  <div class="border rounded p-4 mb-4"> 
+    <div class="d-flex justify-content-around text-center flex-wrap gap-3">
+      <div class="progress-item">
+        <div class="donut-chart" [ngStyle]="{ '--percent': progress.topics + '%' }">
+          <span class="donut-value">{{ progress.topics }}</span>
+        </div>
+        <div><strong>Topics ({{ progress.topics }}%)</strong></div>
+      </div>
+
+      <div class="progress-item">
+        <div class="donut-chart" [ngStyle]="{ '--percent': progress.pdfLessons + '%' }">
+          <span class="donut-value">{{ progress.pdfLessons }}</span>
+        </div>
+        <div><strong>PDF Lessons ({{ progress.pdfLessons }}%)</strong></div>
+      </div>
+
+      <div class="progress-item">
+        <div class="donut-chart" [ngStyle]="{ '--percent': progress.videoLessons + '%' }">
+          <span class="donut-value">{{ progress.videoLessons }}</span>
+        </div>
+        <div><strong>Video Lessons ({{ progress.videoLessons }}%)</strong></div>
+      </div>
+    </div>
+
+  </div>
+
+
+  <!-- Payment Details -->
+  <div class="payment-section p-3 mb-4 rounded">
+    <h5 class="text-white"><strong>₹ Course Fee / Due Instalments</strong></h5>
+    <div class="table-responsive">
+      <table class="table table-hover table-bordered mb-0">
+        <thead>
+          <tr>
+            <th>INSTALLMENT DATE</th>
+            <th>AMOUNT</th>
+            <th>STATUS</th>
+            <th>PAYMENT MODE / REFERENCE NO.</th>
+            <th>ENROLL ID</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let inst of installments">
+            <td>{{ inst.date }}</td>
+            <td><strong>₹ {{ inst.amount | number }}</strong></td>
+            <td><strong>{{ inst.status }}</strong></td>
+            <td>{{ inst.paymentMode }}</td>
+            <td>{{ inst.enrollId }}</td>
+          </tr>
+          <tr>
+            <td><strong>Total</strong></td>
+            <td colspan="4"><strong>₹ {{ totalAmount | number }}</strong></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+  </div>
+
+  <!-- Center / Batch Info -->
+  <div class="payment-section p-3 rounded">
+    
+    <h5 class="text-white"><strong><i class="bi bi-info"></i>Your Center / Batch info.</strong></h5>
+    <div class="table-responsive">
+      <table class="table table-hover table-bordered mb-0">
+        <tbody>
+          <tr>
+            <th class="label">Batch No.</th>
+            <td class="value">{{ this.batchCode}}</td>
+          </tr>
+          <!-- <tr>
+            <th class="label">Timing</th>
+            <td class="value"><i class="far fa-clock"></i> {{ batch.timing }}</td>
+          </tr> -->
+          <tr>
+            <th class="label">Week Days</th>
+            <td class="value">{{ batch.weekdays.join(', ') }}</td>
+          </tr>
+          <tr>
+            <th class="label">Center Address</th>
+            <td class="value">{{ batch.address }}</td>
+          </tr>
+          <tr>
+            <th class="label">Contact</th>
+            <td class="value">
+              <i class="fas fa-phone"></i> {{ batch.phones.join(', ') }} <br>
+              <i class="fas fa-envelope"></i> {{ batch.email }}
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+  </div>
+
+
+
+
+</div>
