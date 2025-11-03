@@ -79,17 +79,14 @@ export class CourseStructureService {
 
 
   createContent(topicId: string, content: ContentDTO): Observable<ContentDTO> {
-    // Matches: router.post('/content/:topicId')
     return this.http.post<ContentDTO>(`${this.baseUrl}/content/${topicId}`, content);
   }
 
   updateContent(id: string, content: ContentDTO): Observable<ContentDTO> {
-    // Matches: router.put('/content/:id')
     return this.http.put<ContentDTO>(`${this.baseUrl}/content/${id}`, content);
   }
 
   deleteContent(id: string): Observable<void> {
-    // Matches: router.delete('/content/:id')
     return this.http.delete<void>(`${this.baseUrl}/content/${id}`);
   }
 }

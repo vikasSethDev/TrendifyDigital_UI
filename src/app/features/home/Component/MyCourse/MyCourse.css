@@ -67,7 +67,7 @@
   background: white;
   border-top: 1px solid var(--primary-color);
   padding: 15px 25px;
-  display: flex;
+  /* display: flex; */
   flex-wrap: wrap;
   gap: 15px;
   justify-content: space-between;
@@ -77,15 +77,15 @@
 .module {
   background: #fff;
   border: 1px solid var(--primary-color);
-  border-radius: 4px;
   display: flex;
   align-items: center;
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.08);
   min-height: 80px;
   padding: 0;
+  margin: 5px;
   overflow: hidden;
   box-sizing: border-box;
-  flex: 0 1 calc(50% - 10px); /* 2 per row on desktop */
+  flex: 0 1 calc(50% - 10px); 
   max-width: calc(50% - 10px);
 }
 
@@ -236,4 +236,3 @@
     max-width: calc(50% - 10px);
   }
 }
-

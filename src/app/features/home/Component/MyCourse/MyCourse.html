@@ -6,52 +6,88 @@
     <p>Loading course sections...</p>
   </div>
 
- <div class="accordion-container">
-  <div class="accordion"
-       *ngFor="let section of sectionsData"
-       (click)="handleSectionClick(section.sectionId)"
-       [class.active]="activeSection === section.sectionId">
 
-    <div class="accordion-header">
-      <div class="section-label">Section {{ section.sectionId }} -</div>
-      <div class="section-title">{{ section.title }}</div>
-      <div class="modules-count">{{ section.modulesCount }} Modules</div>
-      <div class="icon-hand" title="Click to expand">👆</div>
+  <div class="accordion-container">
+
+    <!-- 🔄 Loading spinner -->
+    <div *ngIf="isLoading" class="loading">
+      <div class="spinner"></div>
+      <p>Loading course sections...</p>
     </div>
 
-    <div class="accordion-body" *ngIf="activeSection === section.sectionId">
-      <div class="module"
-           *ngFor="let module of section.modules"
-           [ngClass]="{'not-accessible': !userAccessibleSections.includes(section.sectionId)}">
+    <!-- 🔹 Section Accordion -->
+    <div *ngFor="let section of sections" class="accordion" (click)="handleSectionClick(section._id!)"
+      [class.active]="activeSectionId === section._id">
 
-        <div class="module-id">{{ module.moduleId }}</div>
+      <!-- Section Header -->
+      <div class="accordion-header">
+        <div class="section-label">📘 {{ section.sectionName }}</div>
+        <div class="section-title">{{ section.description || 'No Description' }}</div>
+        <div class="icon-hand" title="Click to expand">👆</div>
+      </div>
 
-        <div class="module-content">
-          <div class="module-title">{{ module.title }}</div>
-          <div class="module-details">{{ module.docsCount }} Docs, {{ module.videosCount }} Videos</div>
+      <!-- Section Body -->
+      <div class="accordion-body" *ngIf="activeSectionId === section._id">
+
+        <!-- Loader inside section -->
+        <div *ngIf="isSectionLoading" class="loading-modules">
+          <div class="spinner small"></div>
+          <p>Loading modules...</p>
         </div>
 
-        <button class="btn-status"
-                [ngClass]="{
-                  watch: module.status === 'watch',
-                  resume: module.status === 'resume'
-                }"
-                (click)="onModuleClick(section.sectionId, module); $event.stopPropagation()">
-          {{ module.status === 'watch' ? 'WATCH AGAIN...' : 'RESUME...' }}
-          <span class="arrow">➔</span>
-        </button>
-      </div>
+        <!-- Modules List -->
+        <div *ngIf="section.modules && section.modules.length > 0; else noModules">
+          <div class="row">
+            <div class="module col-md-6 col-12" *ngFor="let module of section.modules; let i = index"
+              [ngClass]="{'not-accessible': !userAccessibleSections.includes(section._id!)}">
 
-      <div *ngIf="section.levelComplete" class="level-complete">
-        ✔ Level - {{ section.sectionId }} Complete
+              <!-- Module Number -->
+              <div class="module-id">{{ i + 1 }}</div>
+
+              <!-- Module Content -->
+              <div class="module-content">
+                <div class="module-title">{{ module.title }}</div>
+                <div class="module-details">
+                  {{ module.docsCount || 0 }} Docs, {{ module.videosCount || 0 }} Videos
+                </div>
+              </div>
+
+              <!-- Module Action -->
+              <button class="btn-status" (click)="onModuleClick(section._id!, module); $event.stopPropagation()">
+                <span class="arrow">➔</span>
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <ng-template #noModules>
+          <div class="text-muted">No modules available for this section.</div>
+        </ng-template>
+
+
+        <!-- No Modules Template -->
+        <ng-template #noModules>
+          <p class="no-data">No modules available for this section.</p>
+        </ng-template>
+
+        <!-- Level Complete -->
+        <div *ngIf="section.isActive" class="level-complete">
+          ✔ Level - {{ section.sectionName }} Active
+        </div>
       </div>
     </div>
+
+    <!-- No Sections Fallback -->
+    <div *ngIf="!isLoading && sections.length === 0" class="no-data">
+      No course sections available.
+    </div>
   </div>
-</div>
+
+
 
 
   <!-- ❌ No Data Case -->
-  <div *ngIf="!isLoading && sectionsData.length === 0" class="no-data">
+  <div *ngIf="!isLoading && sections.length === 0" class="no-data">
     No course sections available.
   </div>
 

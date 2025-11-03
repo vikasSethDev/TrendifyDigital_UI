@@ -7,6 +7,8 @@ import { StudentAccessService } from '../../Service/studentAccess.service';
 import { StudentAccessDTO } from '../../../../core/DTOs/studentAccess.dto';
 import { IStudentProfileDTO } from '../../../../core/DTOs/IStudentProfileDTO';
 import { MyCourseService } from '../../Service/myCourse.service';
+import { SectionDTO } from '../../../../core/DTOs/CourceMaster/ISection.dto';
+import { ModuleDTO } from '../../../../core/DTOs/CourceMaster/IModule.dto';
 
 
 function mapRawToStudentDTO(rawData: any): IStudentProfileDTO {
@@ -57,6 +59,8 @@ function mapRawToStudentDTO(rawData: any): IStudentProfileDTO {
 })
 export class MyCourse implements OnInit {
 
+  sections: SectionDTO[] = [];
+   module: ModuleDTO[] = [];
   studentProfile!: IStudentProfileDTO | null;
   activeSection: number | null = null;
   user = {
@@ -82,13 +86,14 @@ export class MyCourse implements OnInit {
     companyName: '',
     designation: ''
   };
-
+  activeSectionId: string | null = null;
   isLoading = true;
-  userAccessibleSections: number[] = [];
-  sectionsData: CourseSectionDTO[] = [];
+  userAccessibleSections: string[] = [];
+  isSectionLoading?: boolean;
+
   constructor(private router: Router,
     private courseService: CourseSectionService,
-      private myCourseSer: MyCourseService,
+    private myCourseSer: MyCourseService,
     private studentAccessService: StudentAccessService
   ) { }
 
@@ -112,36 +117,16 @@ export class MyCourse implements OnInit {
 
   }
 
-  // loadSections(): void {
-  //   this.courseService.getAllSections().subscribe({
-  //     next: (data) => {
-  //       this.sectionsData = data;
 
-  //       this.isLoading = false;
 
-  //       console.log(this.sectionsData, 'test mu cource');
-
-  //     },
-  //     error: (err) => {
-  //       this.isLoading = false;
-  //       console.error('Error loading course sections:', err);
-  //       Swal.fire({
-  //         icon: 'error',
-  //         title: 'Error loading course data',
-  //         text: 'Please try again later.',
-  //       });
-  //     },
-  //   });
-  // }
-
-   loadSection(): void {
+  loadSection(): void {
     this.myCourseSer.getAllSections().subscribe({
       next: (data) => {
-        this.sectionsData = data;
+        this.sections = data;
         this.isLoading = false;
 
-          console.log(data, 'sections Data');
-          
+        console.log(data, 'sections Data');
+
       },
       error: (err) => {
         this.isLoading = false;
@@ -155,50 +140,70 @@ export class MyCourse implements OnInit {
     });
   }
 
- loadUserAccess(studentId: string): void {
-  this.studentAccessService.getAccessByStudent(studentId).subscribe({
-    next: (accessList: StudentAccessDTO[]) => {
-      console.log(accessList, 'access list new');
+  loadUserAccess(studentId: string): void {
+    this.studentAccessService.getAccessByStudent(studentId).subscribe({
+      next: (accessList: StudentAccessDTO[]) => {
+        console.log(accessList, 'access list new');
 
-      // ✅ Use sectionId (which now stores _id)
-      this.userAccessibleSections = accessList
-        .filter(a => a.accessGranted)
-        .map(a => a.sectionId);
+        // ✅ Use sectionId (which now stores _id)
+        this.userAccessibleSections = accessList
+          .filter(a => a.accessGranted)
+          .map(a => a.sectionId?.toString() ?? '');
 
-      console.log('Accessible Sections:', this.userAccessibleSections);
-      this.isLoading = false;
-    },
-    error: (err) => {
-      this.isLoading = false;
-      console.error('Error fetching access info:', err);
+        console.log('Accessible Sections:', this.userAccessibleSections);
+        this.isLoading = false;
+      },
+      error: (err) => {
+        this.isLoading = false;
+        console.error('Error fetching access info:', err);
+      }
+    });
+  }
+
+
+ handleSectionClick(sectionId: string): void {
+  // Prevent unauthorized access
+  if (!this.userAccessibleSections.includes(sectionId)) {
+    Swal.fire({
+      toast: true,
+      icon: 'error',
+      title: 'This section is not accessible for you.',
+      position: 'top-end',
+      showConfirmButton: false,
+      timer: 3000,
+      timerProgressBar: true
+    });
+    return;
+  }
+
+  // Toggle accordion open/close
+  this.activeSectionId = this.activeSectionId === sectionId ? null : sectionId;
+
+  if (this.activeSectionId === sectionId) {
+    const section = this.sections.find(s => s._id === sectionId);
+    if (section && !section.modules) {
+      this.isSectionLoading = true;
+      this.myCourseSer.getModulesBySection(sectionId).subscribe({
+        next: (modules: ModuleDTO[]) => {
+          section.modules = modules;
+          this.isSectionLoading = false;
+        },
+        error: (err) => {
+          this.isSectionLoading = false;
+          console.error('Error loading modules:', err);
+          Swal.fire('Error', 'Failed to load modules.', 'error');
+        }
+      });
     }
-  });
+  }
 }
 
-
-  handleSectionClick(sectionId: number) {
-     console.log(sectionId,'payload id ');
-    if (!this.userAccessibleSections.includes(sectionId)) {
-      Swal.fire({
-        toast: true,
-        icon: 'error',
-        title: 'This section is not accessible for you.',
-        position: 'top-end',
-        showConfirmButton: false,
-        timer: 3000,
-        timerProgressBar: true
-      });
-      return;
-    }
-
-    this.activeSection = this.activeSection === sectionId ? null : sectionId;
-  }
 
   toggleSection(id: number) {
     this.activeSection = this.activeSection === id ? null : id;
   }
 
-  onModuleClick(sectionId: number, module: any) {
+  onModuleClick(sectionId: any, module: any) {
     if (this.userAccessibleSections.includes(sectionId)) {
       this.router.navigate(['/home/view-module'], { queryParams: { id: module.id } });
     } else {
