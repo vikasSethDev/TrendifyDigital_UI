@@ -21,10 +21,12 @@
 
       <!-- Section Header -->
       <div class="accordion-header">
-        <div class="section-label">📘 {{ section.sectionName }}</div>
-        <div class="section-title">{{ section.description || 'No Description' }}</div>
+        <div class="section-label">
+          📘 {{ section.sectionId }} | {{ section.sectionName || 'No Description' }}
+        </div>
         <div class="icon-hand" title="Click to expand">👆</div>
       </div>
+
 
       <!-- Section Body -->
       <div class="accordion-body" *ngIf="activeSectionId === section._id">

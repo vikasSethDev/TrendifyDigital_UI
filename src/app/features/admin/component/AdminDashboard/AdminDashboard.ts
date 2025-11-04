@@ -1,114 +1,134 @@
 import { Component, OnInit } from '@angular/core';
-import { IStudentProfileDTO } from '../../../../core/DTOs/IStudentProfileDTO';
-import { Router } from '@angular/router';
-import { StudentService } from '../../../home/Service/student.service';
+import { Chart, registerables } from 'chart.js';
+import { AdminDashboardService } from '../../Service/adminDashboard.service';
+import { DashboardSummaryDTO } from '../../../../core/DTOs/AdminDashboard/DashboardSummary.dto';
 
-
-/**
- * Maps a raw PascalCase student object (from API/session storage) 
- * to the camelCase IStudentProfileDTO format expected by the frontend.
- * @param rawData The raw student object using PascalCase keys (e.g., FirstName, LastName).
- * @returns A new IStudentProfileDTO object with camelCase keys.
- */
-function mapRawToStudentDTO(rawData: any): IStudentProfileDTO {
-  if (!rawData) {
-    return {} as IStudentProfileDTO;
-  }
-  const dto: IStudentProfileDTO = {
-    firstName: rawData.FirstName || '',
-    lastName: rawData.LastName || '',
-    fullName: `${rawData.FirstName || ''} ${rawData.LastName || ''}`.trim(), // Calculated field
-    
-    studentId: rawData.StudentID,
-    role:rawData.role,
-    loginID: rawData.LoginID,
-    email: rawData.Email,
-    mobileNo: rawData.MobileNo,
-    dob: rawData.DOB,
-    gender: rawData.Gender,
-    address: rawData.Address,
-    state: rawData.State,
-    occupation: rawData.Occupation,
-    companyName: rawData.CompanyName,
-    designation: rawData.Designation,
-    objectiveOfCourse: rawData.ObjectiveOfCourse,
-    status: rawData.Status,
-    registrationDate: rawData.RegistrationDate,
-    
-    enrollId: rawData.EnrollID || rawData.EnrollmentID || null,
-    courseCode: rawData.CourseCode,
-    batchCode: rawData.BatchCode,
-    batchTiming: rawData.BatchTiming,
-    phone: rawData.MobileNo || null,
-    city: rawData.City || null,
-    profilePicture: rawData.ProfilePicture || null,
-    resume: rawData.Resume || null,
-  } as IStudentProfileDTO; 
-
-  return dto;
-}
-
+Chart.register(...registerables);
 
 @Component({
   selector: 'app-AdminDashboard',
   standalone: false,
   templateUrl: './AdminDashboard.html',
-  styleUrl: './AdminDashboard.css'
+  styleUrls: ['./AdminDashboard.css']
 })
-export class Admindashboard implements OnInit {
-  studentProfile!: IStudentProfileDTO | null;
-  isLoading = false;
-  errorMessage = '';
-  studentName: string = '';
-  registrationDate: any;
+export class AdminDashboardComponent implements OnInit {
 
-  constructor(private studentService: StudentService,
-    private router: Router,
-  ) { }
+  dashboardData!: DashboardSummaryDTO;
+  selectedYear = new Date().getFullYear();
+  selectedMonth = 0;
+  totalCourses?: number;
+  totalStudents?: number;
+  totalPayments?: number;
+  pendingPayments?: number;
 
-  ngOnInit(): void {
-    const profileStr = sessionStorage.getItem('studentProfile');
+  constructor(private dashboardService: AdminDashboardService) { }
 
-    if (profileStr) {
-      const rawData = JSON.parse(profileStr);
-      this.studentProfile = mapRawToStudentDTO(rawData);
-      
-    } else {
-      console.warn('No profile found in sessionStorage');
-    }
-
-    this.loadProfile();
+ ngOnInit(): void {
+    this.loadDashboard();
   }
 
-  loadProfile() {
-    if (this.studentProfile) {
-      // console.log(this.studentProfile, 'student profile home');
-
-      const firstName = this.studentProfile.firstName;
-      const lastName = this.studentProfile.lastName;
-      
-      this.studentName = this.studentProfile.fullName || `${firstName} ${lastName}`.trim();
-
-      // console.log(this.studentName, 'student name');
-      
-      this.registrationDate = this.studentProfile.registrationDate
-        ? new Date(this.studentProfile.registrationDate).toLocaleDateString()
-        : 'N/A';
+  ngAfterViewInit(): void {
+    // Only attempt to render charts once data is ready
+    if (this.dashboardData) {
+      this.renderCharts();
     }
   }
 
-  goToProfile(): void {
-    if (this.studentProfile) {
-      this.router.navigate(['/home/my-Profile'], { state: { profile: this.studentProfile } });
-    } else {
-      console.warn('No student profile available to pass');
-    }
+  private renderCharts() {
+    this.loadEnrollmentTrendChart();
+    this.loadPaymentOverviewChart();
+    this.loadKPI();
+  }
+loadDashboard(): void {
+    const year = new Date().getFullYear();
+    const month = 0;
+    this.dashboardService.getDashboardSummary(year, month).subscribe({
+      next: (data) => {
+        this.dashboardData = data;
+        setTimeout(() => this.renderCharts(), 0);
+      },
+      error: (err) => console.error('Dashboard load error:', err)
+    });
   }
 
-  signOut(): void {
-    localStorage.clear();
-    sessionStorage.clear();
-    this.studentProfile = null;
-    this.router.navigate(['/login']);
+
+  loadKPI(): void {
+    if (!this.dashboardData?.summary) return;
+
+    console.log('KPI Summary:', this.dashboardData.summary);
+
+    this.totalCourses = this.dashboardData.summary.totalCourses;
+    this.totalStudents = this.dashboardData.summary.totalStudents;
+    this.pendingPayments = this.dashboardData.summary.pendingPayments;
+    this.totalPayments = this.dashboardData.summary.totalPayments
+
+  }
+
+  loadEnrollmentTrendChart(): void {
+    if (!this.dashboardData?.charts?.enrollmentTrend) return;
+
+    const trend = this.dashboardData.charts.enrollmentTrend;
+    const ctx = document.getElementById('enrollmentTrendChart') as HTMLCanvasElement;
+
+    new Chart(ctx, {
+      type: 'line',
+      data: {
+        labels: trend.labels,
+        datasets: [{
+          label: 'Enrollments',
+          data: trend.data,
+          borderColor: '#4B6CB7',
+          backgroundColor: 'rgba(75,108,183,0.2)',
+          fill: true,
+          tension: 0.4
+        }]
+      },
+      options: {
+        responsive: true,
+        plugins: { legend: { display: false } },
+        scales: { y: { beginAtZero: true } }
+      }
+    });
+  }
+
+  loadPaymentOverviewChart(): void {
+    if (!this.dashboardData?.charts?.paymentOverview) return;
+
+    const payment = this.dashboardData.charts.paymentOverview;
+    const ctx = document.getElementById('paymentOverviewChart') as HTMLCanvasElement;
+
+    new Chart(ctx, {
+      type: 'bar',
+      data: {
+        labels: payment.labels,
+        datasets: [
+          {
+            label: 'Received',
+            data: payment.received,
+            backgroundColor: '#4B6CB7'
+          },
+          {
+            label: 'Pending',
+            data: payment.pending,
+            backgroundColor: '#FFD93D'
+          }
+        ]
+      },
+      options: {
+        responsive: true,
+        plugins: { legend: { position: 'bottom' } },
+        scales: { y: { beginAtZero: true } }
+      }
+    });
+  }
+
+  onYearChange(year: number): void {
+    this.selectedYear = year;
+    this.loadDashboard();
+  }
+
+  onMonthChange(month: number): void {
+    this.selectedMonth = month;
+    this.loadDashboard();
   }
 }

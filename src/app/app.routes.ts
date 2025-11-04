@@ -7,7 +7,7 @@ import { MyCourse } from './features/home/Component/MyCourse/MyCourse';
 import { ViewModule } from './features/home/Component/ViewModule/ViewModule';
 import { MyProfile } from './features/home/Component/MyProfile/MyProfile';
 import { ManageStudent } from './features/admin/component/ManageStudent/ManageStudent';
-import { Admindashboard } from './features/admin/component/AdminDashboard/AdminDashboard';
+import { AdminDashboardComponent } from './features/admin/component/AdminDashboard/AdminDashboard';
 import { StudentPaymentComponent } from './features/admin/component/StudentPaymentComponent/StudentPaymentComponent';
 import { StudentCourseAccess } from './features/admin/component/StudentCourseAccess/StudentCourseAccess';
 import { ManageCourse } from './features/admin/component/manage-course/manage-course';
@@ -30,6 +30,7 @@ export const routes: Routes = [
       { path: 'student-payment/:studentId', component: StudentPaymentComponent },
       { path: 'student-access/:studentId', component: StudentCourseAccess },
       { path: 'Manage-Cource', component: ManageCourse },
+      { path: 'admin-Dashboard', component: AdminDashboardComponent },
     ]
   },
   { path: '**', redirectTo: 'login' }

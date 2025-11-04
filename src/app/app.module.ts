@@ -16,11 +16,11 @@ import { CommonModule } from '@angular/common';
 import { HttpClientModule } from '@angular/common/http';
 import { SignupPage } from './features/auth/Component/SignupPage/SignupPage';
 import { PdfViewerModule } from 'ng2-pdf-viewer';
-import { Admindashboard } from './features/admin/component/AdminDashboard/AdminDashboard';
 import { ManageStudent } from './features/admin/component/ManageStudent/ManageStudent';
 import { StudentPaymentComponent } from './features/admin/component/StudentPaymentComponent/StudentPaymentComponent';
 import { StudentCourseAccess } from './features/admin/component/StudentCourseAccess/StudentCourseAccess';
 import { ManageCourse } from './features/admin/component/manage-course/manage-course';
+import { AdminDashboardComponent } from './features/admin/component/AdminDashboard/AdminDashboard';
 
 @NgModule({
   declarations: [
@@ -33,10 +33,10 @@ import { ManageCourse } from './features/admin/component/manage-course/manage-co
     MyProfile,
     SignupPage,
     ManageStudent,
-    Admindashboard,
     StudentPaymentComponent,
     StudentCourseAccess,
-    ManageCourse
+    ManageCourse,
+    AdminDashboardComponent
   ],
   imports: [
     BrowserModule,

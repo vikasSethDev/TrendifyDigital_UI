@@ -9,8 +9,11 @@
   <div class="collapse navbar-collapse" id="navbarContent">
     <ul class="navbar-nav me-auto mb-2 mb-lg-0">
 
-      <li class="nav-item">
+      <li class="nav-item" *ngIf="isStudentFlag">
         <a class="nav-link text-white fw-bold" routerLink="/home/dashboard">Dashboard</a>
+      </li>
+       <li class="nav-item" *ngIf="isAdminFlag">
+        <a class="nav-link text-white fw-bold" routerLink="/home/admin-Dashboard">Dashboard</a>
       </li>
 
       <li class="nav-item" *ngIf="isStudentFlag">

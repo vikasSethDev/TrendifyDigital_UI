@@ -28,8 +28,8 @@ export class LoginPage implements OnInit {
 
   private initForm(): void {
     this.loginForm = this.fb.group({
-      studentId: ['alex', Validators.required],
-      password: ['Alex@1234', Validators.required]
+      studentId: ['', Validators.required],
+      password: ['', Validators.required]
 
     });
   }
