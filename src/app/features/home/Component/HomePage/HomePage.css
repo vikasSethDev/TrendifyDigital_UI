@@ -1,5 +1,3 @@
-
-
 /* Header background */
 .header-bg {
   background-color: var(--primary-color);
@@ -31,7 +29,7 @@
   padding: 0;
   border: 1px solid #ddd;
   border-radius: 4px;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
 }
 
 /* Dropdown items */
@@ -69,4 +67,20 @@
   height: 16px;
   border-radius: 50%;
   border: 1px solid #ccc;
+}
+
+.navbar-logo {
+  height: 56px;
+  width: auto;
+  border: none;
+  border-radius: 6px;
+  background-color: transparent;
+  object-fit: contain;
+  padding: 2px 4px;
+}
+
+.navbar-brand {
+  display: flex;
+  align-items: center;
+  gap: 10px;
 }
