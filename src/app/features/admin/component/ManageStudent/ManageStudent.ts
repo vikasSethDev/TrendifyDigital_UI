@@ -24,7 +24,7 @@ export class ManageStudent implements OnInit {
   currentPage: number = 1;
   totalPages: number = 1;
   totalStudents: number = 0;
-  
+
 
   // Form State
   isModalOpen: boolean = false;
@@ -74,12 +74,17 @@ export class ManageStudent implements OnInit {
     this.studentService.getAllStudents().subscribe({
       next: (response: any) => {
         const data = Array.isArray(response.students) ? response.students : [];
- console.log(data,'tect');
-        this.students = data.map((student: any) => ({
+
+         const studentsOnly = data.filter(
+        (user: any) => user.role === 'student'
+      );
+      
+        console.log(studentsOnly, 'tect');
+        this.students = studentsOnly.map((student: any) => ({
           ...student,
           dob: student.dob && student.dob !== 'N/A' ? student.dob : null
-         
-          
+
+
         }));
       },
       error: (err) => {
@@ -91,20 +96,20 @@ export class ManageStudent implements OnInit {
 
 
 
-setupFilter(): void {
-  this.filterSubject.pipe(
-    debounceTime(300),
-    distinctUntilChanged()
-  ).subscribe(term => {
-    this.filterTerm = term.toLowerCase();
+  setupFilter(): void {
+    this.filterSubject.pipe(
+      debounceTime(300),
+      distinctUntilChanged()
+    ).subscribe(term => {
+      this.filterTerm = term.toLowerCase();
 
-    this.students = this.students.filter(student =>
-      student.firstName?.toLowerCase().includes(this.filterTerm) ||
-      student.email?.toLowerCase().includes(this.filterTerm) ||
-      student.enrollId?.toLowerCase().includes(this.filterTerm)
-    );
-  });
-}
+      this.students = this.students.filter(student =>
+        student.firstName?.toLowerCase().includes(this.filterTerm) ||
+        student.email?.toLowerCase().includes(this.filterTerm) ||
+        student.enrollId?.toLowerCase().includes(this.filterTerm)
+      );
+    });
+  }
 
 
   onFilterChange(event: Event): void {
@@ -160,12 +165,12 @@ setupFilter(): void {
   }
 
   openCourseAccess(student: any) {
-  if (!student._id) {
-    console.error('Student ID missing');
-    return;
+    if (!student._id) {
+      console.error('Student ID missing');
+      return;
+    }
+    this.router.navigate(['/home/student-access', student._id]);
   }
-  this.router.navigate(['/home/student-access', student._id]);
-}
 
 
   private formatDOBForForm(dob: string | undefined): string | null {

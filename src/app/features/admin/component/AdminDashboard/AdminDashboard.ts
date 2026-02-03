@@ -24,7 +24,7 @@ export class AdminDashboardComponent implements OnInit {
 
   constructor(private dashboardService: AdminDashboardService) { }
 
- ngOnInit(): void {
+  ngOnInit(): void {
     this.loadDashboard();
   }
 
@@ -40,12 +40,17 @@ export class AdminDashboardComponent implements OnInit {
     this.loadPaymentOverviewChart();
     this.loadKPI();
   }
-loadDashboard(): void {
+
+
+  loadDashboard(): void {
     const year = new Date().getFullYear();
     const month = 0;
     this.dashboardService.getDashboardSummary(year, month).subscribe({
       next: (data) => {
         this.dashboardData = data;
+
+        console.log(this.dashboardData,'dash data');
+        
         setTimeout(() => this.renderCharts(), 0);
       },
       error: (err) => console.error('Dashboard load error:', err)
@@ -53,17 +58,17 @@ loadDashboard(): void {
   }
 
 
-loadKPI(): void {
-  if (!this.dashboardData?.summary) return;
+  loadKPI(): void {
+    if (!this.dashboardData?.summary) return;
 
-  const summary = this.dashboardData.summary;
+    const summary = this.dashboardData.summary;
 
-  this.totalCourses = summary.totalCourses;
-  this.totalStudents = summary.totalStudents;
-  this.totalPayments = summary.totalPayments;
-  this.pendingPayments = summary.pendingPayments;
-  this.totalEarning = summary.totalEarning;
-}
+    this.totalCourses = summary.totalCourses;
+    this.totalStudents = summary.totalStudents;
+    this.totalPayments = summary.totalPayments;
+    this.pendingPayments = summary.pendingPayments;
+    this.totalEarning = summary.totalEarning;
+  }
 
   loadEnrollmentTrendChart(): void {
     if (!this.dashboardData?.charts?.enrollmentTrend) return;
@@ -92,36 +97,36 @@ loadKPI(): void {
     });
   }
 
-loadPaymentOverviewChart(): void {
-  if (!this.dashboardData?.charts?.paymentOverview) return;
+  loadPaymentOverviewChart(): void {
+    if (!this.dashboardData?.charts?.paymentOverview) return;
 
-  const payment = this.dashboardData.charts.paymentOverview;
-  const ctx = document.getElementById('paymentOverviewChart') as HTMLCanvasElement;
+    const payment = this.dashboardData.charts.paymentOverview;
+    const ctx = document.getElementById('paymentOverviewChart') as HTMLCanvasElement;
 
-  new Chart(ctx, {
-    type: 'bar',
-    data: {
-      labels: payment.labels,
-      datasets: [
-        {
-          label: 'Received',
-          data: payment.received,
-          backgroundColor: '#4B6CB7'
-        },
-        {
-          label: 'Pending',
-          data: payment.pending,
-          backgroundColor: '#FFD93D'
-        }
-      ]
-    },
-    options: {
-      responsive: true,
-      plugins: { legend: { position: 'bottom' } },
-      scales: { y: { beginAtZero: true } }
-    }
-  });
-}
+    new Chart(ctx, {
+      type: 'bar',
+      data: {
+        labels: payment.labels,
+        datasets: [
+          {
+            label: 'Received',
+            data: payment.received,
+            backgroundColor: '#4B6CB7'
+          },
+          {
+            label: 'Pending',
+            data: payment.pending,
+            backgroundColor: '#FFD93D'
+          }
+        ]
+      },
+      options: {
+        responsive: true,
+        plugins: { legend: { position: 'bottom' } },
+        scales: { y: { beginAtZero: true } }
+      }
+    });
+  }
 
 
   onYearChange(year: number): void {
