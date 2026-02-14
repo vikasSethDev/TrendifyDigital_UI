@@ -1,34 +1,67 @@
 import { Injectable } from '@angular/core';
-import { CanActivate, CanActivateChild, Router, UrlTree } from '@angular/router';
+import { Router, CanActivate, ActivatedRouteSnapshot, RouterStateSnapshot, UrlTree } from '@angular/router';
+import { Observable } from 'rxjs';
 
+/**
+ * Guard to protect routes that require authentication
+ */
 @Injectable({
-  providedIn: 'root' // Registers guard globally
+  providedIn: 'root'
 })
-export class AuthGuard implements CanActivate, CanActivateChild {
+export class AuthGuard implements CanActivate {
 
   constructor(private router: Router) {}
 
-  // Centralized login check
-  private checkLogin(): boolean | UrlTree {
-    const token = localStorage.getItem('token'); // Must match your login storage key
-    console.log('AuthGuard - token:', token);
-
+  canActivate(
+    route: ActivatedRouteSnapshot,
+    state: RouterStateSnapshot
+  ): Observable<boolean | UrlTree> | Promise<boolean | UrlTree> | boolean | UrlTree {
+    
+    // Check if token exists
+    const token = sessionStorage.getItem('authToken');
+    
     if (token) {
-      return true; // User is logged in
-    } else {
-      // Not logged in, redirect to login
-      // Optional: preserve the original URL to navigate back after login
-      return this.router.createUrlTree(['/login'], { queryParams: { returnUrl: this.router.url } });
+      // Check if token is still valid
+      if (this.isTokenValid(token)) {
+        return true;
+      } else {
+        // Token expired
+        console.warn('Token expired - redirecting to login');
+        this.clearSession();
+        return this.router.createUrlTree(['/login'], {
+          queryParams: { returnUrl: state.url, reason: 'expired' }
+        });
+      }
+    }
+
+    // Not logged in - redirect to login page with return url
+    console.warn('Not authenticated - redirecting to login');
+    return this.router.createUrlTree(['/login'], {
+      queryParams: { returnUrl: state.url }
+    });
+  }
+
+  /**
+   * Check if JWT token is valid
+   */
+  private isTokenValid(token: string): boolean {
+    try {
+      const payload = JSON.parse(atob(token.split('.')[1]));
+      const expiry = payload.exp * 1000; // Convert to milliseconds
+      return Date.now() < expiry;
+    } catch (error) {
+      console.error('Token validation error:', error);
+      return false;
     }
   }
 
-  // Protect top-level routes
-  canActivate(): boolean | UrlTree {
-    return this.checkLogin();
-  }
-
-  // Protect child routes
-  canActivateChild(): boolean | UrlTree {
-    return this.checkLogin();
+  /**
+   * Clear session storage
+   */
+  private clearSession(): void {
+    sessionStorage.removeItem('authToken');
+    sessionStorage.removeItem('studentProfile');
+    sessionStorage.removeItem('studentRole');
+    sessionStorage.removeItem('studentID');
   }
 }

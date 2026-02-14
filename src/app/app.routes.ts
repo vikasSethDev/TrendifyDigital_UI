@@ -11,31 +11,66 @@ import { AdminDashboardComponent } from './features/admin/component/AdminDashboa
 import { StudentPaymentComponent } from './features/admin/component/StudentPaymentComponent/StudentPaymentComponent';
 import { StudentCourseAccess } from './features/admin/component/StudentCourseAccess/StudentCourseAccess';
 import { ManageCourse } from './features/admin/component/manage-course/manage-course';
-// import { StudentCourseAccess } from './features/admin/component/StudentCourseAccess/studentcourseaccess';
+import { UnauthorizedComponent } from './features/shared/unauthorized/unauthorized.component';
+
+// ✅ Import Guards
+import { AuthGuard } from './core/guards/auth.guard';
+import { AdminGuard } from './core/guards/admin.guard';
 
 export const routes: Routes = [
+  // ========================================
+  // PUBLIC ROUTES (No Authentication)
+  // ========================================
   { path: '', redirectTo: 'login', pathMatch: 'full' },
   { path: 'login', component: LoginPage },
   { path: 'signup', component: SignupPage },
+  { path: 'unauthorized', component: UnauthorizedComponent },
+
+  // ========================================
+  // PROTECTED ROUTES (Require Authentication)
+  // ========================================
   {
     path: 'home',
     component: HomePage,
+    canActivate: [AuthGuard], // ✅ Protect entire home section
     children: [
       { path: '', redirectTo: 'dashboard', pathMatch: 'full' },
+      
+      // Student routes
       { path: 'dashboard', component: Dashbord },
       { path: 'myCource', component: MyCourse },
       { path: 'view-module', component: ViewModule },
       { path: 'my-Profile', component: MyProfile },
-      { path: 'manageStudent', component: ManageStudent },
-      { path: 'student-payment/:studentId', component: StudentPaymentComponent },
-      { path: 'student-access/:studentId', component: StudentCourseAccess },
-      { path: 'Manage-Cource', component: ManageCourse },
-      { path: 'admin-Dashboard', component: AdminDashboardComponent },
+      
+      // Admin routes (require admin role)
+      { 
+        path: 'admin-Dashboard', 
+        component: AdminDashboardComponent,
+        canActivate: [AdminGuard] // ✅ Admin only
+      },
+      { 
+        path: 'manageStudent', 
+        component: ManageStudent,
+        canActivate: [AdminGuard] // ✅ Admin only
+      },
+      { 
+        path: 'student-payment/:studentId', 
+        component: StudentPaymentComponent,
+        canActivate: [AdminGuard] // ✅ Admin only
+      },
+      { 
+        path: 'student-access/:studentId', 
+        component: StudentCourseAccess,
+        canActivate: [AdminGuard] // ✅ Admin only
+      },
+      { 
+        path: 'Manage-Cource', 
+        component: ManageCourse,
+        canActivate: [AdminGuard] // ✅ Admin only
+      },
     ]
   },
+
+  // Catch-all redirect
   { path: '**', redirectTo: 'login' }
 ];
-
-
-
-
